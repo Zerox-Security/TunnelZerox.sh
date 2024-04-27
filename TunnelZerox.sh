@@ -492,7 +492,7 @@ EOF
 ruta_archivos=$(cat "/tmp/ZeroxRuta.txt")
 
 wget -q https://wordpress.org/latest.tar.gz > /dev/null 2>&1
-tar xzf latest.tar.gz > /dev/null 2>&1
+unzip latest-es_ES.zip > /dev/null 2>&1
 
 sudo mv wordpress/* "$ruta_archivos"
 sudo mv wordpress/.htaccess "$ruta_archivos" 2>/dev/null
