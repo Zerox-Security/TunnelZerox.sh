@@ -364,13 +364,33 @@ print_color() {
     echo -e "$1$2\e[0m"
 }
 
-
 # ZEROX SECURITY - HORUS INNOVA
 RED='\033[0;31m'
 
 NC='\033[0m'
 
 mensaje="VAMOS A EMPEZAR A INSTALAR TODO - SOLO ESPERA..."
+
+#!/bin/bash
+
+# Verificar si zip está instalado
+if ! command -v zip &> /dev/null
+then
+    # Instalar zip silenciosamente
+    sudo apt-get update -qq > /dev/null
+    sudo apt-get install -y -qq zip > /dev/null
+    
+    # Verificar si la instalación fue exitosa
+    if [ $? -eq 0 ]
+    then
+        echo "zip ha sido instalado correctamente."
+    else
+        echo "No se pudo instalar zip. Por favor, instálalo manualmente."
+    fi
+else
+    echo "zip ya está instalado."
+fi
+
 
 for (( i=0; i<${#mensaje}; i++ )); do
   echo -ne "${RED}${mensaje:$i:1}${NC}"
@@ -491,12 +511,12 @@ EOF
 
 ruta_archivos=$(cat "/tmp/ZeroxRuta.txt")
 
-wget -q https://wordpress.org/latest.tar.gz > /dev/null 2>&1
-unzip latest-es_ES.zip > /dev/null 2>&1
+wget -q https://es.wordpress.org/latest-es_ES.zip > /dev/null 2>&1
+unzip -q latest-es_ES.zip > /dev/null 2>&1
 
 sudo mv wordpress/* "$ruta_archivos"
 sudo mv wordpress/.htaccess "$ruta_archivos" 2>/dev/null
-rm -rf wordpress latest.tar.gz > /dev/null 2>&1
+rm -rf wordpress latest-es_ES.zip > /dev/null 2>&1
 
 sudo chown -R www-data:www-data "$ruta_archivos"
 sudo chmod -R 755 "$ruta_archivos" > /dev/null 2>&1
