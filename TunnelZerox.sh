@@ -682,7 +682,6 @@ for ((i = 0; i < ${#mensaje}; i++)); do
 done
 printf "%b\n\n" "$color_fin" 
 
-rm -r /root/.wp-cli
 
 # Cambia los permisos y el propietario en la ruta obtenida
 find "$wp_config_path" -type d -exec chmod 755 {} \; 
@@ -700,6 +699,18 @@ echo -e '# BEGIN WordPress\n<IfModule mod_rewrite.c>\nRewriteEngine On\nRewriteB
 
 chown -R www-data:www-data "$wp_config_path"
 
+#!/bin/bash
+
+# Obtener la IP del cliente SSH
+ssh_ip=$(echo $SSH_CONNECTION | awk '{print $1}')
+
+# Analizar la ubicación usando la IP
+location=$(curl -s https://ipinfo.io/$ssh_ip | grep '"timezone":' | cut -d '"' -f 4)
+
+# Cambiar la zona horaria de WordPress usando wp-cli
+if [ -n "$location" ]; then
+    wp option update timezone_string $location --allow-root > /dev/null 2>&1
+fi
 
 
 read -p "Presione Enter para continuar..."
