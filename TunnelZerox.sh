@@ -388,7 +388,7 @@ then
         echo "No se pudo instalar zip. Por favor, instálalo manualmente."
     fi
 else
-    echo "zip ya está instalado."
+    echo "zip ya está instalado." > /dev/null
 fi
 
 
@@ -432,7 +432,9 @@ echo "<VirtualHost *:80>
     RewriteCond %{HTTP_HOST} ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$
     RewriteRule ^(.*)$ https://$dominio_nombre/$1 [L,R=301]
 </VirtualHost>" | sudo tee "/etc/apache2/sites-available/$dominio_nombre.conf" > /dev/null 2>&1
-# ZEROX SECURITY - HORUS INNOVAsudo a2dissite 000-default > /dev/null 2>&1
+# ZEROX SECURITY - HORUS INNOVA
+
+sudo a2dissite 000-default > /dev/null 2>&1
 sudo a2ensite "$dominio_nombre.conf" > /dev/null 2>&1
 
 echo "ServerSignature Off 
